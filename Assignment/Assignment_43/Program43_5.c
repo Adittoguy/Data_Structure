@@ -63,41 +63,36 @@ void InsertFirst(PPNODE Head, int no)
 
 ////////////////////////////////////////////////////////////////////////
 //
-//  Function Name   :   DisplayPrime
-//  Description     :   Used to print all the prime numbers from linked list
+//  Function Name   :   SumDigit
+//  Description     :   Used to print sum of all digits of all numbers persent in linked list
 //  Input           :   Head
-//  Output          :   Integer(All prime numbers)
+//  Output          :   Integer(Sum of digit)
 //  Author          :   Aditya Bhaskar Sanap
 //  Date            :   17/12/2025
 //
 ////////////////////////////////////////////////////////////////////////
 
-void DisplayPrime(PNODE Head)
+int SumDigit(PNODE Head)
 {
     PNODE iCnt = Head;
-    int i = 0;
-    int iCount = 0;
-
+    int iDigit = 0;
+    int iSum = 0;
+    
     while(iCnt != NULL)
     {
-        iCount = 0;
+        iDigit = 0;
+        iSum = 0;
 
-        for(i = 1; i <= (iCnt -> Data); i++)
+        while(iCnt -> Data != 0)
         {
-            if((iCnt-> Data % i)==0)
-            {
-                iCount++;
-            }
+            iDigit = (iCnt->Data) % 10;
+            iSum = iSum + iDigit;
+            iCnt -> Data /= 10; 
         }
-
-        if(iCount == 2)
-        {
-            printf("%d\t",iCnt->Data);
-        }
+        printf("%d\t", iSum);
 
         iCnt = iCnt -> Next;
     }
-    printf("\n");
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -118,7 +113,7 @@ int main()
     InsertFirst(&First, 21);
     InsertFirst(&First, 11);
 
-    DisplayPrime(First);
+    SumDigit(First);
 
     return 0;
 }
