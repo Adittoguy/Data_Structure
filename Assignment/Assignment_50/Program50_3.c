@@ -1,14 +1,16 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 //
 //  Required Header Files
 //
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
-#include <stdbool.h>
+#include<stdbool.h>
 #include<stdlib.h>
 
-struct node
+#pragma pack(1)
+
+struct node 
 {
     int data;
     struct node * next;
@@ -33,15 +35,15 @@ typedef struct node ** PPNODE;
 //  Input         : PPNODE first → Address of first pointer
 //                  int no        → Data to be inserted in the node
 //  Output        : Modifies linked list by adding new node at first position
-//  Date          : 30/12/2025
+//  Date          : 31/12/2025
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void InsertFirst(PPNODE first, int no)
 {
     PNODE newn = NULL;
-    newn = (PNODE) malloc (sizeof(NODE));
 
+    newn = (PNODE) malloc (sizeof(NODE));
     newn -> data = no;
     newn -> next = NULL;
 
@@ -51,44 +53,51 @@ void InsertFirst(PPNODE first, int no)
     }
     else
     {
-        newn -> next = (*first);
+        newn -> next = *first;
         *first = newn;
     }
-}
-
-
+}   
 
 void Display(PNODE first)
 {
     while(first != NULL)
     {
-        printf("| %d |-->", first -> data);
-        first = first -> next;
+        printf("| %d |-->", first-> data);
+        first = first -> next; 
     }
     printf("NULL\n");
 }
 
 ////////////////////////////////////////////////////////////////////////
 //
-//  Function Name   :   IncrementAll
-//  Description     :   Used to Increase all elements from list by 1 
-//  Input           :   &Head
-//  Output          :   -1 -> 0
+//  Function Name   :   CheckSorted
+//  Description     :   Used to Check List is sorted or not
+//  Input           :   Head
+//  Output          :   BOOLEAN
 //  Author          :   Aditya Bhaskar Sanap
-//  Date            :   30/12/2025
+//  Date            :   1/1/2026
 //
 ////////////////////////////////////////////////////////////////////////
 
-void IncrementAll(PPNODE first)
-{
-    PNODE temp = NULL;
-    temp = *first;
 
-    while(temp != NULL)
+bool CheckSorted(PNODE first)
+{
+    int iPrev = 0;
+
+    while(first != NULL)
     {
-        temp -> data++;
-        temp = temp -> next;
+        if(iPrev < first->data)
+        {
+            iPrev = first->data;
+        }
+        else
+        {
+            return false;
+            break;
+        }
+        first = first->next;
     }
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -100,20 +109,26 @@ void IncrementAll(PPNODE first)
 int main()
 {
     bool bRet = false;
-    PNODE head  = NULL;
+    PNODE head = NULL;
 
-    InsertFirst(&head, 62);
-    InsertFirst(&head, -54);
-    InsertFirst(&head, 0);
+    InsertFirst(&head, 990);
+    InsertFirst(&head, 110);
+    InsertFirst(&head, 100);
     InsertFirst(&head, 51);
-    InsertFirst(&head, -21);
+    InsertFirst(&head, 21);
     InsertFirst(&head, 11);
 
     Display(head);
 
-    IncrementAll(&head);
-
-    Display(head);
+    bRet = CheckSorted(head);
+    if(bRet == true)
+    {
+        printf("It is Sorted");
+    }
+    else
+    {
+        printf("It is not Sorted");
+    }
 
     return 0;
 }

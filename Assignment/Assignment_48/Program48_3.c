@@ -1,14 +1,15 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 //
 //  Required Header Files
 //
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
-#include <stdbool.h>
 #include<stdlib.h>
 
-struct node
+#pragma pack(1)
+
+struct node 
 {
     int data;
     struct node * next;
@@ -33,15 +34,15 @@ typedef struct node ** PPNODE;
 //  Input         : PPNODE first → Address of first pointer
 //                  int no        → Data to be inserted in the node
 //  Output        : Modifies linked list by adding new node at first position
-//  Date          : 30/12/2025
+//  Date          : 31/12/2025
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void InsertFirst(PPNODE first, int no)
 {
     PNODE newn = NULL;
-    newn = (PNODE) malloc (sizeof(NODE));
 
+    newn = (PNODE) malloc (sizeof(NODE));
     newn -> data = no;
     newn -> next = NULL;
 
@@ -51,42 +52,47 @@ void InsertFirst(PPNODE first, int no)
     }
     else
     {
-        newn -> next = (*first);
+        newn -> next = *first;
         *first = newn;
     }
-}
-
-
+}   
 
 void Display(PNODE first)
 {
     while(first != NULL)
     {
-        printf("| %d |-->", first -> data);
-        first = first -> next;
+        printf("| %d |-->", first-> data);
+        first = first -> next; 
     }
     printf("NULL\n");
 }
 
 ////////////////////////////////////////////////////////////////////////
 //
-//  Function Name   :   IncrementAll
-//  Description     :   Used to Increase all elements from list by 1 
+//  Function Name   :   MultiplyByTwo
+//  Description     :   Used to Multiply all elements by 2
 //  Input           :   &Head
-//  Output          :   -1 -> 0
+//  Output          :   Element -> 2 * Element
 //  Author          :   Aditya Bhaskar Sanap
-//  Date            :   30/12/2025
+//  Date            :   31/12/2025
 //
 ////////////////////////////////////////////////////////////////////////
 
-void IncrementAll(PPNODE first)
+
+void MultiplyByTwo(PPNODE first)
 {
     PNODE temp = NULL;
+
+    if((first == NULL) || (*first == NULL))
+    {
+        return;
+    }
+
     temp = *first;
 
     while(temp != NULL)
     {
-        temp -> data++;
+        temp -> data = temp->data * 2;
         temp = temp -> next;
     }
 }
@@ -99,19 +105,18 @@ void IncrementAll(PPNODE first)
 
 int main()
 {
-    bool bRet = false;
-    PNODE head  = NULL;
+    PNODE head = NULL;
 
-    InsertFirst(&head, 62);
-    InsertFirst(&head, -54);
-    InsertFirst(&head, 0);
+    InsertFirst(&head, 99);
+    InsertFirst(&head, 110);
+    InsertFirst(&head, 100);
     InsertFirst(&head, 51);
-    InsertFirst(&head, -21);
+    InsertFirst(&head, 21);
     InsertFirst(&head, 11);
 
     Display(head);
 
-    IncrementAll(&head);
+    MultiplyByTwo(&head);
 
     Display(head);
 

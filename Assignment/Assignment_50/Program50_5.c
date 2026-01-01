@@ -1,14 +1,16 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 //
 //  Required Header Files
 //
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
-#include <stdbool.h>
+#include<stdbool.h>
 #include<stdlib.h>
 
-struct node
+#pragma pack(1)
+
+struct node 
 {
     int data;
     struct node * next;
@@ -33,15 +35,15 @@ typedef struct node ** PPNODE;
 //  Input         : PPNODE first → Address of first pointer
 //                  int no        → Data to be inserted in the node
 //  Output        : Modifies linked list by adding new node at first position
-//  Date          : 30/12/2025
+//  Date          : 31/12/2025
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void InsertFirst(PPNODE first, int no)
 {
     PNODE newn = NULL;
-    newn = (PNODE) malloc (sizeof(NODE));
 
+    newn = (PNODE) malloc (sizeof(NODE));
     newn -> data = no;
     newn -> next = NULL;
 
@@ -51,44 +53,46 @@ void InsertFirst(PPNODE first, int no)
     }
     else
     {
-        newn -> next = (*first);
+        newn -> next = *first;
         *first = newn;
     }
-}
-
-
+}   
 
 void Display(PNODE first)
 {
     while(first != NULL)
     {
-        printf("| %d |-->", first -> data);
-        first = first -> next;
+        printf("| %d |-->", first-> data);
+        first = first -> next; 
     }
     printf("NULL\n");
 }
 
 ////////////////////////////////////////////////////////////////////////
 //
-//  Function Name   :   IncrementAll
-//  Description     :   Used to Increase all elements from list by 1 
-//  Input           :   &Head
-//  Output          :   -1 -> 0
+//  Function Name   :   Displaynth
+//  Description     :   Used to Display till nth nodes from list
+//  Input           :   Head
+//  Output          :   Nodes
 //  Author          :   Aditya Bhaskar Sanap
-//  Date            :   30/12/2025
+//  Date            :   1/1/2026
 //
 ////////////////////////////////////////////////////////////////////////
 
-void IncrementAll(PPNODE first)
-{
-    PNODE temp = NULL;
-    temp = *first;
 
-    while(temp != NULL)
+void Displaynth(PNODE first, int pos)
+{
+    int iCnt = 0;
+    int iCount = 0;
+
+    for(iCnt = 1; iCnt <= pos; iCnt++)
     {
-        temp -> data++;
-        temp = temp -> next;
+        printf("| %d | ",first->data);
+        iCount++;
+        first = first->next;
     }
+    printf("\n");
+    printf("Total nodes till pos are: %d", iCount);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -99,21 +103,18 @@ void IncrementAll(PPNODE first)
 
 int main()
 {
-    bool bRet = false;
-    PNODE head  = NULL;
+    PNODE head = NULL;
 
-    InsertFirst(&head, 62);
-    InsertFirst(&head, -54);
-    InsertFirst(&head, 0);
+    InsertFirst(&head, 990);
+    InsertFirst(&head, 110);
+    InsertFirst(&head, 100);
     InsertFirst(&head, 51);
-    InsertFirst(&head, -21);
+    InsertFirst(&head, 21);
     InsertFirst(&head, 11);
 
     Display(head);
 
-    IncrementAll(&head);
-
-    Display(head);
+    Displaynth(head, 5);
 
     return 0;
 }
