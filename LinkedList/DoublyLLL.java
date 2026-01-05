@@ -28,7 +28,17 @@ class DoublyLL
     }
 
     public void Display()
-    {}
+    {
+        node temp = null;
+        temp = first;
+
+        while(temp != null)
+        {
+            System.out.print("| "+temp.data+" |<==>");
+            temp = temp.next;
+        }
+        System.out.println("null");
+    }
 
     public int Count()
     {
@@ -36,16 +46,94 @@ class DoublyLL
     }
 
     public void InsertFirst(int no)
-    {}
+    {
+        node newn = null;
+        newn = new node(no);
+
+        if(first == null)
+        {
+            first = newn;
+        }
+        else
+        {
+            newn.next = first;
+            first.prev = newn;
+            first = newn;
+        }
+        iCount++;
+    }
 
     public void InsertLast(int no)
-    {}
+    {
+        node temp = null;
+        node newn = null;
+        newn = new node(no);
+
+        if(first == null)
+        {
+            first = newn;
+        }
+        else
+        {
+            temp = first;
+
+            while(temp.next != null)
+            {
+                temp = temp.next;
+            }
+
+            temp.next = newn;
+            newn.prev = temp;
+        }
+        iCount++;
+    }
 
     public void DeleteFirst()
-    {}
+    {
+        node temp = null;
+
+        if(first == null)
+        {
+            return;
+        }
+        else if(first.next == null)
+        {
+            first = null;
+        }
+        else
+        {
+            temp = first;
+            first = first.next;
+
+            first.prev = null;
+        }
+        iCount--;
+    }
 
     public void DeleteLast()
-    {}
+    {
+        node temp = null;
+        
+        if(first == null)
+        {
+            return;
+        }
+        else if(first.next == null)
+        {
+            first = null;
+        }
+        else
+        {
+            temp = first;
+            
+            while(temp.next.next != null)
+            {
+                temp = temp.next;
+            }
+            temp.next = null;
+        }
+        iCount--;
+    }
 
     public void InsertAtPos(int no, int pos)
     {}
@@ -54,7 +142,7 @@ class DoublyLL
     {}
 }
 
-class program450
+class DoublyLLL
 {
     public static void main(String A[])
     {
