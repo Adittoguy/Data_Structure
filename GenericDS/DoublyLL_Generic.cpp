@@ -1,29 +1,18 @@
-// Doubly Circular Linked List (DoublyCL)
+// Doubly Linear Linked List (Using Templates)
 // -----------------------------------------------------------------------------
-// File Name    : DoublyCL.cpp
-// Description  : Generic implementation of Doubly Circular Linked List in C++
-//                using templates.
+// Description  : Implementation of Doubly Linear Linked List in C++
+//                using generic programming (templates).
 // Author       : Aditya Bhaskar Sanap
 // Date         : 04/01/2026
-// -----------------------------------------------------------------------------
-//
-// Doubly Circular Linked List Characteristics:
-// - Each node contains data, next pointer, and previous pointer
-// - Last node's next pointer refers to the first node
-// - First node's previous pointer refers to the last node
-// - Traversal is possible in both forward and backward directions
-//
 // -----------------------------------------------------------------------------
 
 #include<iostream>
 using namespace std;
 
-#pragma pack(1)
-
 ////////////////////////////////////////////////////////////////////////
 //
-// Structure Name : DoublyCLLnode
-// Description    : Represents a single node of Doubly Circular Linked List.
+// Structure Name : DoublyLLLnode
+// Description    : Represents a single node of a Doubly Linear Linked List.
 // Template Type  : T (Generic data type)
 // Members        :
 //      data  - Stores data of generic type
@@ -31,35 +20,43 @@ using namespace std;
 //      prev  - Pointer to previous node
 //
 ////////////////////////////////////////////////////////////////////////
+#pragma pack(1)
 template <class T>
-struct DoublyCLLnode
+struct DoublyLLLnode
 {
-    T data;
-    struct DoublyCLLnode<T> *next;
-    struct DoublyCLLnode<T> *prev;
+    public:
+        T data;
+        struct DoublyLLLnode<T> *next;
+        struct DoublyLLLnode<T> *prev;
+
+        DoublyLLLnode(T no)
+        {
+            this->data = no;
+            this->next = NULL;
+            this->prev = NULL;
+        }
 };
 
 ////////////////////////////////////////////////////////////////////////
 //
-// Class Name  : DoublyCLL
-// Description : Implements Doubly Circular Linked List operations.
+// Class Name  : DoublyLLL
+// Description : Provides functionality to manage Doubly Linear Linked List.
 // Features    :
-//      - Insert node at first, last, and specific position
-//      - Delete node from first, last, and specific position
+//      - Insertion at first, last, and specific position
+//      - Deletion from first, last, and specific position
 //      - Display list elements
 //      - Count total number of nodes
 //
 ////////////////////////////////////////////////////////////////////////
 template <class T>
-class DoublyCLL
+class DoublyLLL
 {
     private:
-        struct DoublyCLLnode<T> * first;   // Pointer to first node
-        struct DoublyCLLnode<T> * last;    // Pointer to last node
-        int iCount;                        // Stores number of nodes
+        struct DoublyLLLnode<T> * first;    // Pointer to first node
+        int iCount;                         // Stores number of nodes
 
     public:
-        DoublyCLL();
+        DoublyLLL();
         void InsertFirst(T no);
         void InsertLast(T no);
         void DeleteFirst();
@@ -70,56 +67,45 @@ class DoublyCLL
         void InsertAtPos(T no, int pos);
 };
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 //
-// Constructor Name : DoublyCLL
-// Description      : Initializes an empty doubly circular linked list.
-// Input            : void
-// Output           : Sets first and last pointers to NULL
-// Author           : Aditya Bhaskar Sanap
-// Date             : 04/01/2026
+// Constructor Name : DoublyLLL
+// Description      : Initializes an empty doubly linked list.
 //
-////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////
 template <class T>
-DoublyCLL<T>::DoublyCLL()
+DoublyLLL<T>::DoublyLLL()
 {
-    cout<<"Object of DoublyCLL gets created.\n";
+    cout<<"Object of DoublyLLL gets created.\n";
     this->first = NULL;
-    this->last = NULL;
     this->iCount = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Function Name : Display
-// Description   : Displays all elements of the doubly circular linked list
-//                 in forward circular manner.
+// Description   : Displays all elements of the doubly linked list
+//                 in forward direction.
 // Input         : void
-// Output        : Prints all node data on console
+// Output        : Prints node data on console
 // Author        : Aditya Bhaskar Sanap
 // Date          : 04/01/2026
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-void DoublyCLL<T>::Display()
+void DoublyLLL<T>::Display()
 {
-    struct DoublyCLLnode<T> * temp = first;
+    struct DoublyLLLnode<T> * temp = first;
 
-    if(first == NULL && last == NULL)
-    {
-        cout<<"Linked list is empty\n";
-        return;
-    }
+    cout<<"\n NULL <=> ";
 
-    cout<<" <=> ";
-
-    do
+    while(temp != NULL)
     {
         cout<<"| "<<temp->data<<" | <=> ";
         temp = temp->next;
-    }while(temp != last->next);
+    }
 
-    cout<<"\n";
+    cout<<"NULL\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,7 +119,7 @@ void DoublyCLL<T>::Display()
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-int DoublyCLL<T>::Count()
+int DoublyLLL<T>::Count()
 {
     return this->iCount;
 }
@@ -141,7 +127,7 @@ int DoublyCLL<T>::Count()
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Function Name : InsertFirst
-// Description   : Inserts a new node at the beginning of doubly circular linked list.
+// Description   : Inserts a new node at the beginning of the linked list.
 // Input         : T no → Data to be inserted
 // Output        : Linked list is updated
 // Author        : Aditya Bhaskar Sanap
@@ -149,18 +135,17 @@ int DoublyCLL<T>::Count()
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-void DoublyCLL<T>::InsertFirst(T no)
+void DoublyLLL<T>::InsertFirst(T no)
 {
-    struct DoublyCLLnode<T> * newn = new struct DoublyCLLnode<T>;
+    struct DoublyLLLnode<T> * newn = new struct DoublyLLLnode<T>;
 
     newn->data = no;
     newn->next = NULL;
     newn->prev = NULL;
 
-    if(first == NULL && last == NULL)
+    if(first == NULL)
     {
         first = newn;
-        last = newn;
     }
     else
     {
@@ -169,16 +154,13 @@ void DoublyCLL<T>::InsertFirst(T no)
         first = newn;
     }
 
-    last->next = first;
-    first->prev = last;
-
     iCount++;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Function Name : InsertLast
-// Description   : Inserts a new node at the end of doubly circular linked list.
+// Description   : Inserts a new node at the end of the linked list.
 // Input         : T no → Data to be inserted
 // Output        : Linked list is updated
 // Author        : Aditya Bhaskar Sanap
@@ -186,28 +168,30 @@ void DoublyCLL<T>::InsertFirst(T no)
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-void DoublyCLL<T>::InsertLast(T no)
+void DoublyLLL<T>::InsertLast(T no)
 {
-    struct DoublyCLLnode<T> * newn = new struct DoublyCLLnode<T>;
+    struct DoublyLLLnode<T> * newn = new struct DoublyLLLnode<T>;
+    struct DoublyLLLnode<T> * temp = NULL;
 
     newn->data = no;
     newn->next = NULL;
     newn->prev = NULL;
 
-    if(first == NULL && last == NULL)
+    if(first == NULL)
     {
         first = newn;
-        last = newn;
     }
     else
     {
-        newn->prev = last;
-        last->next = newn;
-        last = newn;
-    }
+        temp = first;
+        while(temp->next != NULL)
+        {
+            temp = temp->next;
+        }
 
-    last->next = first;
-    first->prev = last;
+        temp->next = newn;
+        newn->prev = temp;
+    }
 
     iCount++;
 }
@@ -215,7 +199,7 @@ void DoublyCLL<T>::InsertLast(T no)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Function Name : InsertAtPos
-// Description   : Inserts a new node at the specified position.
+// Description   : Inserts a node at the specified position.
 // Input         : T no  → Data to be inserted
 //                 int pos → Position for insertion
 // Output        : Linked list is updated
@@ -224,13 +208,13 @@ void DoublyCLL<T>::InsertLast(T no)
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-void DoublyCLL<T>::InsertAtPos(T no,int pos)
+void DoublyLLL<T>::InsertAtPos(T no,int pos)
 {
     int iCnt = 0;
 
     if(pos < 1 || pos > iCount + 1)
     {
-        cout<<"Invalid position\n";
+        cout<<"Invalid Position\n";
         return;
     }
 
@@ -244,8 +228,8 @@ void DoublyCLL<T>::InsertAtPos(T no,int pos)
     }
     else
     {
-        struct DoublyCLLnode<T> * newn = new struct DoublyCLLnode<T>;
-        struct DoublyCLLnode<T> * temp = first;
+        struct DoublyLLLnode<T> * newn = new struct DoublyLLLnode<T>;
+        struct DoublyLLLnode<T> * temp = first;
 
         newn->data = no;
         newn->next = NULL;
@@ -268,7 +252,7 @@ void DoublyCLL<T>::InsertAtPos(T no,int pos)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Function Name : DeleteFirst
-// Description   : Deletes the first node from doubly circular linked list.
+// Description   : Deletes the first node from the linked list.
 // Input         : void
 // Output        : Linked list is updated
 // Author        : Aditya Bhaskar Sanap
@@ -276,24 +260,23 @@ void DoublyCLL<T>::InsertAtPos(T no,int pos)
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-void DoublyCLL<T>::DeleteFirst()
+void DoublyLLL<T>::DeleteFirst()
 {
-    if(first == NULL && last == NULL)
+    if(first == NULL)
     {
         return;
     }
-    else if(first == last)
+    else if(first->next == NULL)
     {
         delete first;
         first = NULL;
-        last = NULL;
     }
     else
     {
+        struct DoublyLLLnode<T> * temp = first;
         first = first->next;
-        delete first->prev;
-        last->next = first;
-        first->prev = last;
+        first->prev = NULL;
+        delete temp;
     }
 
     iCount--;
@@ -302,7 +285,7 @@ void DoublyCLL<T>::DeleteFirst()
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Function Name : DeleteLast
-// Description   : Deletes the last node from doubly circular linked list.
+// Description   : Deletes the last node from the linked list.
 // Input         : void
 // Output        : Linked list is updated
 // Author        : Aditya Bhaskar Sanap
@@ -310,24 +293,27 @@ void DoublyCLL<T>::DeleteFirst()
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-void DoublyCLL<T>::DeleteLast()
+void DoublyLLL<T>::DeleteLast()
 {
-    if(first == NULL && last == NULL)
+    if(first == NULL)
     {
         return;
     }
-    else if(first == last)
+    else if(first->next == NULL)
     {
         delete first;
         first = NULL;
-        last = NULL;
     }
     else
     {
-        last = last->prev;
-        delete last->next;
-        last->next = first;
-        first->prev = last;
+        struct DoublyLLLnode<T> * temp = first;
+        while(temp->next->next != NULL)
+        {
+            temp = temp->next;
+        }
+
+        delete temp->next;
+        temp->next = NULL;
     }
 
     iCount--;
@@ -344,13 +330,13 @@ void DoublyCLL<T>::DeleteLast()
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-void DoublyCLL<T>::DeleteAtPos(int pos)
+void DoublyLLL<T>::DeleteAtPos(int pos)
 {
     int iCnt = 0;
 
     if(pos < 1 || pos > iCount)
     {
-        cout<<"Invalid position\n";
+        cout<<"Invalid Position\n";
         return;
     }
 
@@ -364,16 +350,17 @@ void DoublyCLL<T>::DeleteAtPos(int pos)
     }
     else
     {
-        struct DoublyCLLnode<T> * temp = first;
+        struct DoublyLLLnode<T> * temp = first;
 
         for(iCnt = 1; iCnt < pos - 1; iCnt++)
         {
             temp = temp->next;
         }
 
-        temp->next = temp->next->next;
-        delete temp->next->prev;
-        temp->next->prev = temp;
+        struct DoublyLLLnode<T> * target = temp->next;
+        temp->next = target->next;
+        target->next->prev = temp;
+        delete target;
 
         iCount--;
     }
@@ -383,12 +370,12 @@ void DoublyCLL<T>::DeleteAtPos(int pos)
 //
 // Entry Point Function : main
 // Description          : Demonstrates all operations of
-//                        Doubly Circular Linked List.
+//                        Doubly Linear Linked List.
 //
 ////////////////////////////////////////////////////////////////////////
 int main()
 {
-    DoublyCLL<int> obj;
+    DoublyLLL<int> obj;
     int iRet = 0;
 
     obj.InsertFirst(51);
@@ -398,6 +385,7 @@ int main()
     obj.Display();
 
     iRet = obj.Count();
+
     cout<<"total node in linked list is : "<<iRet<<"\n";
 
     obj.InsertLast(101);
@@ -407,30 +395,39 @@ int main()
     obj.Display();
 
     iRet = obj.Count();
+
     cout<<"total node in linked list is : "<<iRet<<"\n";
 
     obj.DeleteFirst();
+
     obj.Display();
 
     iRet = obj.Count();
+
     cout<<"total node in linked list is : "<<iRet<<"\n";
 
     obj.DeleteLast();
+
     obj.Display();
 
     iRet = obj.Count();
+
     cout<<"total node in linked list is : "<<iRet<<"\n";
 
     obj.InsertAtPos(105,4);
+
     obj.Display();
 
     iRet = obj.Count();
+
     cout<<"total node in linked list is : "<<iRet<<"\n";
 
     obj.DeleteAtPos(4);
+
     obj.Display();
 
     iRet = obj.Count();
+
     cout<<"total node in linked list is : "<<iRet<<"\n";
 
     return 0;

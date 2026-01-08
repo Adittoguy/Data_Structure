@@ -11,11 +11,19 @@ using namespace std;
 //      next  - Pointer to next node
 //
 ////////////////////////////////////////////////////////////////////////////////
+#pragma pack(1)
 template <class T>
 struct SinglyCLLnode
 {
-    T data;
-    struct SinglyCLLnode<T> *next;
+    public:
+        T data;
+        struct SinglyCLLnode<T> *next;
+
+        SinglyCLLnode(no)
+        {
+            this->data = no;
+            this->next = NULL;
+        }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
